@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "module": "commonjs",
+    "declaration": false, // Disable .d.ts files in the output
+    "removeComments": true, // Remove comments in the output files
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": false, // Disable source maps if not needed
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "strictNullChecks": true, // Ensure type safety
+    "noImplicitAny": true, // Prevent implicit any types
+    "strictBindCallApply": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "**/*.spec.ts", // Exclude test files
+    "**/*.test.ts" // Exclude test files
+  ]
+}

@@ -1,0 +1,1 @@
+export const auctionStatusEnum = ['ACTIVE', 'ENDED'] as const;
