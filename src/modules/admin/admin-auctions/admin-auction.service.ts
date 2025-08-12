@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 
 import { UpdateAuctionDto } from 'src/common/dto/admin/auction.dto';
 import { pagination } from 'src/common/utils/pagination';
+import { collections } from 'src/constants/collections';
 import { AdminAuctionModel, AdminAuctionModelDocument } from 'src/modules/admin/admin-auctions/admin-auction.schema';
 
 @Injectable()
@@ -33,15 +34,29 @@ export class AdminAuctionService {
     const pipeline: any[] = [
       { $match: query },
       {
+        $lookup: {
+          from: collections.admin.cars,
+          localField: 'carId',
+          foreignField: '_id',
+          as: 'car',
+        },
+      },
+      {
+        $unwind: {
+          path: '$car',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
         $facet: {
-          data: [{ $sort: finalSort }, { $skip: skip }, { $limit: limit },],
-          totalCount: [{ $count: 'count' }]
+          data: [{ $sort: finalSort }, { $skip: skip }, { $limit: limit }],
+          totalCount: [{ $count: 'count' }],
         },
       },
       {
         $project: {
           data: 1,
-          totalCount: { $arrayElemAt: ['$totalCount.count', 0] }
+          totalCount: { $arrayElemAt: ['$totalCount.count', 0] },
         },
       },
     ];

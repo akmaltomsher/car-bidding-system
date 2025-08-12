@@ -52,16 +52,19 @@ export class AuctionGateway
     console.log(`Client disconnected: ${client.id}`);
   }
 
-  async broadcastAuctionList() {
+  async broadcastAuctionList(changeAuction: boolean = false) {
     let auctions = await this.redisService.get(this.cacheKey);
-    if (!auctions) {
+    if (!auctions || changeAuction) {
+      if (changeAuction) {
+        await this.redisService.del(this.cacheKey);
+      }
       const now = new Date();
       auctions = await this.adminAuctionService.findAll({
         page: 1,
         limit: 20,
         query: {
           startTime: { $lte: now },
-          endTime: { $gte: now }
+          endTime: { $gte: now },
         },
         sort: {},
       });
